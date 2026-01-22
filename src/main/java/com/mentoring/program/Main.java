@@ -1,9 +1,12 @@
 package com.mentoring.program;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     static double currentBalance = 0.0;
+    static List<Transaction> transactionHistory = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -14,7 +17,7 @@ public class Main {
             scanner.close();
             return; 
         }
-       
+
         boolean running = true;
         while (running) {
             // Display menu(done)
@@ -24,7 +27,8 @@ public class Main {
             System.out.println("1. Deposit");
             System.out.println("2. Withdraw");
             System.out.println("3. Check Balance");
-            System.out.println("4. Exit");
+            System.out.println("4. Print Transaction History.");
+            System.out.println("5. Exit");
             System.out.print("Choose an option: ");
             
             int choice = scanner.nextInt();
@@ -36,6 +40,12 @@ public class Main {
             } else if (choice == 3) {
                 balance();
             } else if (choice == 4) {
+                System.out.println("--- HISTORY ---");
+                for (Transaction t : transactionHistory) {
+                    System.out.println(t);
+                }
+                if (transactionHistory.isEmpty()) System.out.println("No history found.");
+            } else if (choice == 5) {
                 System.out.println("Goodbye! Have a nice day!!");
                 running = false;
             } else {
@@ -63,6 +73,7 @@ public class Main {
             double amount = scanner.nextDouble();
             if (amount > 0) {
                 currentBalance = currentBalance + amount;
+                transactionHistory.add(new Transaction("Deposit", amount));
                 System.out.println("You successfully deposited: " + amount);
             }
             else {
@@ -80,6 +91,7 @@ public class Main {
                 System.out.println("Invalid amount. Balance isn't enough.");
             }else {
                 currentBalance = currentBalance - amount;
+                transactionHistory.add(new Transaction("Withdrawal", amount));
                 System.out.println("You successfully withdrew: " + amount);
             } 
         }
